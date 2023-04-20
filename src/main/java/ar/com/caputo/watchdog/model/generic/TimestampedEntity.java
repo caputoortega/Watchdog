@@ -1,6 +1,7 @@
 package ar.com.caputo.watchdog.model.generic;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -17,8 +18,16 @@ public abstract class TimestampedEntity extends Entity {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
-        this.creationDate = creationDate;
+    /**
+     * This will preserve the original value during
+     * object retrieval but generate a new one during
+     * object creation.
+     * @param timestamp
+     */
+    public void setCreationDate(Timestamp timestamp) {
+        this.creationDate = timestamp == null ?
+                            Timestamp.valueOf(LocalDateTime.now()) 
+                            : timestamp;
     }
 
 }
