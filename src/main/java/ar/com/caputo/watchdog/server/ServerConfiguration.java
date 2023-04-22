@@ -1,9 +1,11 @@
 package ar.com.caputo.watchdog.server;
 
+import static spark.Spark.path;
 import static spark.Spark.before;
 import static spark.Spark.notFound;
 import static spark.Spark.internalServerError;
 
+import ar.com.caputo.watchdog.rest.TestEndpoint;
 import ar.com.caputo.watchdog.server.filter.AuthFilter;
 import ar.com.caputo.watchdog.server.transformer.JsonTransformer;
 import spark.Spark;
@@ -20,13 +22,16 @@ public class ServerConfiguration {
 
         configure();
         registerCustomErrorHandlers();
+        registerEndpoints();
 
     }
 
     private void configure() {
 
         Spark.defaultResponseTransformer(new JsonTransformer());
-        before("/api", this.AUTH);
+        path("/api", ()->{
+            before("/*", this.AUTH);
+        });
 
     }
 
@@ -44,6 +49,10 @@ public class ServerConfiguration {
 
 
 
+    }
+
+    private void registerEndpoints() {
+        new TestEndpoint();
     }
 
 }

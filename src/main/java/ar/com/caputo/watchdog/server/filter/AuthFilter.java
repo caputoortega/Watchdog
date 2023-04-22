@@ -9,6 +9,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
+import ar.com.caputo.watchdog.server.ServerUtils;
+
 public class AuthFilter implements Filter {
 
     private final String secret;
@@ -23,9 +25,7 @@ public class AuthFilter implements Filter {
         String token = request.headers("Authorization");
         
         if(token == null || !token.startsWith("Bearer ")) {
-            response.status(401);
-            halt();
-            return;
+            halt(401, ServerUtils.buildResponse("No authorisation token present!"));
         }
 
         String userToken = token.substring(7);
@@ -33,8 +33,7 @@ public class AuthFilter implements Filter {
             Algorithm algorithm = Algorithm.HMAC512(secret);
             JWT.require(algorithm).build().verify(userToken);
         } catch (JWTVerificationException e) {
-            response.status(401);
-            halt();
+            halt(401, ServerUtils.buildResponse("Authorisation token is invalid!"));
         }
 
     }
