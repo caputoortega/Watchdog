@@ -6,7 +6,8 @@
             "name": "WatchdogWebApi",
             "request": "launch",
             "mainClass": "ar.com.caputo.watchdog.WatchdogWebApi",
-            "projectName": "watchdog"
+            "projectName": "watchdog",
+            "args": "[\"e895fbd610e8e80bf7006bdb1134ff208ea89a1393d70e0e6a22229cbc1f60b1cfab1df140f36c3b89b28b08fa23bf1703336f8432cb325ca23bc5e8d8872f4d\"]"
         }
     ]
 }

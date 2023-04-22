@@ -5,17 +5,18 @@ import ar.com.caputo.watchdog.server.ServerConfiguration;
 public class WatchdogWebApi {
 
     private static WatchdogWebApi instance;
-    private final ServerConfiguration CONFIGURATION;
+    private ServerConfiguration configuration;
     
-    private WatchdogWebApi() {
-        
-        this.CONFIGURATION = new ServerConfiguration();
-
-    }
+    private WatchdogWebApi() {}
     
     public static void main(String... args) {
 
-        WatchdogWebApi.getInstance().init();
+        if(args.length < 1) {
+            System.err.println("You must provide an authentication secret!");
+            return;
+        }
+
+        WatchdogWebApi.getInstance().init(args[0]);
 
     }
 
@@ -25,9 +26,13 @@ public class WatchdogWebApi {
         return instance;
     }
 
-    public void init() {
+    public void init(String secret) {
 
-        CONFIGURATION.apply();
+        if(this.configuration == null) {
+            this.configuration = new ServerConfiguration(secret);
+        }
+
+        this.configuration.apply();
 
     }
     
